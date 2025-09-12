@@ -78,9 +78,11 @@ extraction_api_response:ExtractionApiResponse = scrapfly.extract(
     )
 )
 
-# result
+# extracted data
 extraction_api_response.data
+print(extraction_api_response.data)
 
-# result content_type
+# extracted data content_type
 extraction_api_response.content_type
 'application/json'
+print(extraction_api_response.content_type)
