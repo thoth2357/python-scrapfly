@@ -43,6 +43,8 @@ _DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 def _date_parser(value):
     if isinstance(value, Dict):
         over = value.items()
+    elif isinstance(value, bytes):
+        return value
     else:
         over = enumerate(value)
 
