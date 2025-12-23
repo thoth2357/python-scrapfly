@@ -38,6 +38,24 @@ class Format(Enum):
     GIF = "gif"
 
 
+class VisionDeficiency(Enum):
+    """
+    Simulate vision deficiency for accessibility testing (WCAG compliance)
+
+    Attributes:
+        DEUTERANOPIA: Red-green color blindness (green-blind), affects ~6% of males.
+        PROTANOPIA: Red-green color blindness (red-blind), affects ~2% of males
+        TRITANOPIA: Simulate color blindness.
+        ACHROMATOPSIA: Complete color blindness (monochromacy), affects ~0.003%
+        BLURREDVISION: Blurred/unfocused vision, affects ~2.2B globally
+    """
+    DEUTERANOPIA = "deuteranopia"
+    PROTANOPIA = "protanopia"
+    TRITANOPIA = "tritanopia"
+    ACHROMATOPSIA = "achromatopsia"
+    BLURREDVISION = "blurredvision"
+
+
 class ScreenshotConfig(BaseApiConfig):
     url: str
     format: Optional[Format] = None
@@ -72,6 +90,7 @@ class ScreenshotConfig(BaseApiConfig):
         cache: Optional[bool] = None,
         cache_ttl: Optional[bool] = None,
         cache_clear: Optional[bool] = None,
+        vision_deficiency: Optional[VisionDeficiency] = None,
         webhook: Optional[str] = None,
         raise_on_upstream_error: bool = True
     ):
@@ -92,6 +111,7 @@ class ScreenshotConfig(BaseApiConfig):
         self.cache = cache
         self.cache_ttl = cache_ttl
         self.cache_clear = cache_clear
+        self.vision_deficiency = vision_deficiency
         self.webhook = webhook
         self.raise_on_upstream_error = raise_on_upstream_error
 
@@ -147,6 +167,9 @@ class ScreenshotConfig(BaseApiConfig):
             if self.cache_clear is not None:
                 logging.warning('Params "cache_clear" is ignored. Works only if cache is enabled')
 
+        if self.vision_deficiency is not None:
+            params['vision_deficiency'] = self.vision_deficiency.value
+
         if self.webhook is not None:
             params['webhook_name'] = self.webhook
 
@@ -171,6 +194,7 @@ class ScreenshotConfig(BaseApiConfig):
             'cache': self.cache,
             'cache_ttl': self.cache_ttl,
             'cache_clear': self.cache_clear,
+            'vision_deficiency': self.vision_deficiency.value if self.vision_deficiency else None,
             'webhook': self.webhook,
             'raise_on_upstream_error': self.raise_on_upstream_error
         }
@@ -198,6 +222,7 @@ class ScreenshotConfig(BaseApiConfig):
         cache = screenshot_config_dict.get('cache', None)
         cache_ttl = screenshot_config_dict.get('cache_ttl', None)
         cache_clear = screenshot_config_dict.get('cache_clear', None)
+        vision_deficiency = screenshot_config_dict.get('vision_deficiency', None)
         webhook = screenshot_config_dict.get('webhook', None)
         raise_on_upstream_error = screenshot_config_dict.get('raise_on_upstream_error', True)
 
@@ -216,6 +241,7 @@ class ScreenshotConfig(BaseApiConfig):
             cache=cache,
             cache_ttl=cache_ttl,
             cache_clear=cache_clear,
+            vision_deficiency=vision_deficiency,
             webhook=webhook,
             raise_on_upstream_error=raise_on_upstream_error
         )
