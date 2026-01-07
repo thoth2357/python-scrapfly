@@ -17,6 +17,7 @@ screenshot_api_response: ScreenshotApiResponse = scrapfly.screenshot(
         rendering_wait=5000, # Delay in milliseconds to wait after the page was loaded
         wait_for_selector='div.products-wrap', # XPath or CSS selector to wait for
         auto_scroll=True, # Whether to automatically scroll down to the bottom of the page
+        # vision_deficiency=VisionDeficiency.DEUTERANOPIA, # Simulate vision deficiency
     )
 )
 
