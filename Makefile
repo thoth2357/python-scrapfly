@@ -23,8 +23,6 @@ release:
 	-git commit -m "Update API documentation for version $(VERSION)"
 	-git push origin master
 	git tag -a $(VERSION) -m "Version $(VERSION)"
-	python setup.py sdist bdist_wheel
-	python -m twine upload --config-file .pypirc dist/*
 	git push --tags
 	$(MAKE) bump VERSION=$(NEXT_VERSION)
 
